@@ -4,10 +4,19 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import *
-from .serializers import *
+from rest_framework.permissions import BasePermission
+from v1.serializers import *
+from v1.models import *
+
+SAFE_METHODS = ('GET','OPTIONS','HEAD')
+
+class ReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.method in SAFE_METHODS
 
 class ProfessionsView(APIView):
+    permission_classes = [ReadOnly]
+
     def get_queryset(self):
         return self.request.query_params.get('type')
 
@@ -29,6 +38,8 @@ class ProfessionsView(APIView):
         return Response({"success": profession_saved.id})
     
 class ProfessionView(APIView):
+    permission_classes = [ReadOnly]
+
     def get(self, request, pk):
         profession = get_object_or_404(Profession.objects.all(), pk=pk)
         serializer = ProfessionSerializer(profession)
@@ -54,6 +65,8 @@ class ProfessionView(APIView):
 ####
 
 class RaidsView(APIView):
+    permission_classes = [ReadOnly]
+
     def get_queryset(self):
         return self.request.query_params.get('addon')
 
@@ -74,6 +87,8 @@ class RaidsView(APIView):
         return Response({"success": raid_saved.id})
     
 class RaidView(APIView):
+    permission_classes = [ReadOnly]
+
     def get(self, request, pk):
         raid = get_object_or_404(Raid.objects.all(), pk=pk)
         serializer = RaidSerializer(raid)
@@ -99,6 +114,8 @@ class RaidView(APIView):
 ###
 
 class HeroClassesView(APIView):
+    permission_classes = [ReadOnly]
+
     def get(self, request):
         heroClasses = HeroClass.objects.all()
         serializer = HeroClassSerializer(heroClasses, many=True)
@@ -137,6 +154,8 @@ class HeroClassView(APIView):
 ###
 
 class RaciesView(APIView):
+    permission_classes = [ReadOnly]
+
     def get_queryset(self):
         return self.request.query_params.get('fraction')
 
@@ -157,6 +176,8 @@ class RaciesView(APIView):
         return Response({"success": race_saved.id})
     
 class RaceView(APIView):
+    permission_classes = [ReadOnly]
+
     def get(self, request, pk):
         race = get_object_or_404(Race.objects.all(), pk=pk)
         serializer = RaceSerializer(race)

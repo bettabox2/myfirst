@@ -21,4 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/', include('v1.urls')),
     path('v2/', include('v2.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+    path("api/accounts/",include("accounts.urls")),
 ]
