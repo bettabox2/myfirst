@@ -1,0 +1,13 @@
+version: '2.2'
+services:
+    myfirst:
+        image: 7757/myfirst:dev-0.5
+        restart: 'always'
+        environment:
+          - ALLOWED_HOST=localhost
+        ports:
+          - "80:8000"
+        volumes:
+          - ./db.sqlite3:/django/db.sqlite3
+        
+        
